@@ -78,7 +78,7 @@ public class HippodromeClassTest {
             }
             Hippodrome hippodrome = new Hippodrome(horses);
 
-            assertEquals(horses.get(3), hippodrome.getWinner());
+            assertSame(horses.get(3), hippodrome.getWinner());
         }
     }
 }

@@ -2,11 +2,12 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class HorseClassTest {
 
@@ -26,15 +27,17 @@ public class HorseClassTest {
             }
         }
 
-        @Test
-        void Param1_Empty_Exeption() {
-            assertThrows(IllegalArgumentException.class, () -> new Horse(ArgumentMatchers.matches("\\p{Blank}*"), 20.1, 2.4));
+        @ParameterizedTest
+        @ValueSource(strings = {"", "   ", "\t", "\n", "\r"})
+        void Param1_Empty_Exeption(String str) {
+            assertThrows(IllegalArgumentException.class, () -> new Horse(str, 20.1, 2.4));
         }
 
-        @Test
-        void Param1_Empty_ExeptionMessage() {
+        @ParameterizedTest
+        @ValueSource(strings = {"", "   ", "\t", "\n", "\r"})
+        void Param1_Empty_ExeptionMessage(String str) {
             try {
-                new Horse(ArgumentMatchers.matches("\\p{Blank}*"), 12.3, 2.4);
+                new Horse(str, 12.3, 2.4);
             } catch (IllegalArgumentException e) {
                 assertEquals("Name cannot be blank.", e.getMessage());
             }
@@ -68,7 +71,6 @@ public class HorseClassTest {
             }
         }
     }
-
 
     @Nested
     class MethodsTests {
